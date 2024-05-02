@@ -335,7 +335,7 @@ async def login(
 
     if env_var_api_key and env_var_api_key == key:
         is_valid_key = await check_key_is_valid_for_login(key)
-        is_correct_key_format = key.startswith("pnu_") or key.startswith("pnb_")
+        is_correct_key_format = key.startswith(("pnu_", "pnb_"))
         if not is_valid_key:
             help_message = "Please ensure your credentials are correct and unexpired."
             if not is_correct_key_format:
