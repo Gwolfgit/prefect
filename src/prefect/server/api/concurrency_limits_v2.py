@@ -11,6 +11,7 @@ from prefect.server.database.interface import PrefectDBInterface
 from prefect.server.schemas import actions
 from prefect.server.utilities.schemas import PrefectBaseModel
 from prefect.server.utilities.server import PrefectRouter
+import math
 
 router = PrefectRouter(prefix="/v2/concurrency_limits", tags=["Concurrency Limits V2"])
 
@@ -157,7 +158,7 @@ async def bulk_increment_active_slots(
         non_decaying = [
             str(limit.name)
             for limit in active_limits
-            if limit.slot_decay_per_second == 0.0
+            if math.isclose(limit.slot_decay_per_second, 0.0, rel_tol=1e-09, abs_tol=0.0)
         ]
 
         if mode == "rate_limit" and non_decaying:
@@ -204,7 +205,7 @@ async def bulk_increment_active_slots(
 
         wait_time_per_slot = (
             blocking_limit.avg_slot_occupancy_seconds
-            if blocking_limit.slot_decay_per_second == 0.0
+            if math.isclose(blocking_limit.slot_decay_per_second, 0.0, rel_tol=1e-09, abs_tol=0.0)
             else (1.0 / blocking_limit.slot_decay_per_second)
         )
 
