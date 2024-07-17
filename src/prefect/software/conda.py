@@ -8,6 +8,7 @@ from typing import List, Type
 import yaml
 
 from prefect._internal.pydantic import HAS_PYDANTIC_V2
+from security import safe_command
 
 if HAS_PYDANTIC_V2:
     from pydantic.v1 import Field, validate_arguments
@@ -103,7 +104,7 @@ def current_environment_conda_requirements(
     if explicit_only:
         command.append("--from-history")
 
-    process = subprocess.run(command, capture_output=True)
+    process = safe_command.run(subprocess.run, command, capture_output=True)
     parsed = json.loads(process.stdout)
     if "error" in parsed:
         raise CondaError(
