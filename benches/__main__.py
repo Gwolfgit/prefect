@@ -1,6 +1,7 @@
 import subprocess
 import sys
 from pathlib import Path
+from security import safe_command
 
 default_target = Path(__file__).parent
 targets = []
@@ -15,8 +16,7 @@ for arg in sys.argv[1:] if len(sys.argv) > 1 else []:
         targets.append(arg)
 
 
-process = subprocess.run(
-    [
+process = safe_command.run(subprocess.run, [
         "pytest",
         "--no-cov",
         # TODO: These should be overridable
