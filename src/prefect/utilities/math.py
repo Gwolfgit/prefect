@@ -1,5 +1,5 @@
 import math
-import random
+import secrets
 
 
 def poisson_interval(average_interval, lower=0, upper=1):
@@ -13,7 +13,7 @@ def poisson_interval(average_interval, lower=0, upper=1):
 
     # note that we ensure the argument to the logarithm is stabilized to prevent
     # calling log(0), which results in a DomainError
-    return -math.log(max(1 - random.uniform(lower, upper), 1e-10)) * average_interval
+    return -math.log(max(1 - secrets.SystemRandom().uniform(lower, upper), 1e-10)) * average_interval
 
 
 def exponential_cdf(x, average_interval):

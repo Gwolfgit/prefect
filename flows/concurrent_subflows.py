@@ -1,10 +1,10 @@
 import asyncio
-import random
 
 from packaging.version import Version
 
 import prefect
 from prefect import flow, task
+import secrets
 
 # Support for this pattern was added in 2.10.6
 # to support subflows with the same name
@@ -13,7 +13,7 @@ MINIMUM_VERSION = "2.10.6"
 
 @task
 async def dummy_task(j: int):
-    await asyncio.sleep(random.randint(0, 2))
+    await asyncio.sleep(secrets.SystemRandom().randint(0, 2))
     return j
 
 
